@@ -1,0 +1,62 @@
+<div class="form-section">
+  <button mat-raised-button color="primary" (click)="addNewSectionForm()">
+      Add
+  </button>
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="arrayTestForm" *ngFor="let formElement of arrayForm; let i = index;" >
+        <div [formGroupName]="i">
+            <mat-form-field>
+                <input type="text" 
+                 matInput 
+                 name="ledget" 
+                 placeholder="Ledget*"
+                 formControlName="ledget"
+                 [(ngModel)]= "arrayValues[i].ledget"
+                [matAutocomplete]="auto">
+                <mat-error>Ledget is required</mat-error>
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of ledgets" [value]="option.number">{{option.name}}</mat-option>
+            </mat-autocomplete>
+            <mat-form-field>
+                <input 
+                [attr.disabled]="formElement.get('credit').value"
+                matInput
+                type="number" 
+                name="debit" 
+                id="" 
+                placeholder="debit*"
+                [(ngModel)]= "arrayValues[i].debit"
+                formControlName="debit">
+                <mat-hint *ngIf="formElement.get('credit').value">Field Disabled</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field >
+                <input 
+                matInput
+                [attr.disabled]="formElement.get('debit').value"
+                type="number" 
+                name="credit" 
+                id="" 
+                placeholder="credit*"
+                [(ngModel)]= "arrayValues[i].credit"
+                formControlName="credit">
+                <mat-hint *ngIf="formElement.get('debit').value">Field Disabled</mat-hint>
+            </mat-form-field>
+            </div>
+      </div>
+      <div>Total: <span *ngIf="totalAmount > 0"> {{totalAmount}} </span></div>
+      
+      <button type="submit" mat-raised-button color="primary" [disabled]="myForm.invalid">
+        Submit
+      </button>
+
+      <div *ngIf="showError && (submitted == true)">
+        ERROR, Debit should have the same total than credit
+      </div>
+      <div *ngIf="!showError &&  (submitted == true)">
+        Success
+        </div>
+  </form>
+</div>
+
