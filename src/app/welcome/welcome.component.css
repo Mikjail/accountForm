@@ -7,3 +7,10 @@ mat-form-field{
     flex-direction: column;
     align-items: center;
 }
+.total-section{
+    display: flex;
+    justify-content: flex-end;
+}
+.total-section > .total-detail{
+    width: 192px;
+}

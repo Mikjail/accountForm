@@ -1,4 +1,4 @@
-<div class="form-section">
+<div class="form-section" *ngIf="ledgets.length > 0">
   <button mat-raised-button color="primary" (click)="addNewSectionForm()">
       Add
   </button>
@@ -10,42 +10,51 @@
                  matInput 
                  name="ledget" 
                  placeholder="Ledget*"
+                 [formControl]="myControl[i]"
                  formControlName="ledget"
                  [(ngModel)]= "arrayValues[i].ledget"
-                [matAutocomplete]="auto">
-                <mat-error>Ledget is required</mat-error>
+                 (blur)= "formElement.get('ledget').touched = true"
+                 [matAutocomplete]="auto">
+                 <mat-error>Ledget is required</mat-error>
             </mat-form-field>
             <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of ledgets" [value]="option.number">{{option.name}}</mat-option>
+                <mat-option *ngFor="let option of ladgetFilter | async" [value]="option.number">{{option.name}}</mat-option>
             </mat-autocomplete>
             <mat-form-field>
                 <input 
-                [attr.disabled]="formElement.get('credit').value"
+                [attr.disabled]="arrayValues[i].credit"
                 matInput
                 type="number" 
                 name="debit" 
                 id="" 
                 placeholder="debit*"
+                (click)="indexInput = i"
                 [(ngModel)]= "arrayValues[i].debit"
+                (blur)= "valueHasChanged(arrayValues[i].debit,  formElement.get('credit'))"
                 formControlName="debit">
-                <mat-hint *ngIf="formElement.get('credit').value">Field Disabled</mat-hint>
+                <mat-error>Debit is required</mat-error>
             </mat-form-field>
-
             <mat-form-field >
                 <input 
                 matInput
-                [attr.disabled]="formElement.get('debit').value"
+                [attr.disabled]="arrayValues[i].debit"
                 type="number" 
                 name="credit" 
                 id="" 
                 placeholder="credit*"
+                (click)="indexInput = i"
                 [(ngModel)]= "arrayValues[i].credit"
+                (change)= "valueHasChanged(arrayValues[i].credit, formElement.get('debit'))"
                 formControlName="credit">
-                <mat-hint *ngIf="formElement.get('debit').value">Field Disabled</mat-hint>
+                <mat-error>Credit is required</mat-error>
             </mat-form-field>
             </div>
       </div>
-      <div>Total: <span *ngIf="totalAmount > 0"> {{totalAmount}} </span></div>
+      <div class="total-section">
+        
+      <div class="total-detail">Total Debit: <span> {{showTotalDebit()}} </span></div>
+      <div class="total-detail">Total Credit: <span> {{showTotalCredit()}} </span></div>
+      </div>
       
       <button type="submit" mat-raised-button color="primary" [disabled]="myForm.invalid">
         Submit
@@ -58,5 +67,8 @@
         Success
         </div>
   </form>
+</div>
+<div class="form-section" *ngIf="!ledgets.length > 0">
+    <h1>Loading Form...</h1>
 </div>
 
