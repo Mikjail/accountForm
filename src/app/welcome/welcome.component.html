@@ -30,7 +30,7 @@
                 placeholder="debit*"
                 (click)="indexInput = i"
                 [(ngModel)]= "arrayValues[i].debit"
-                (blur)= "valueHasChanged(arrayValues[i].debit,  formElement.get('credit'))"
+                (keyup)= "valueHasChanged(arrayValues[i].debit,  formElement.get('credit'))"
                 formControlName="debit">
                 <mat-error>Debit is required</mat-error>
             </mat-form-field>
@@ -44,7 +44,7 @@
                 placeholder="credit*"
                 (click)="indexInput = i"
                 [(ngModel)]= "arrayValues[i].credit"
-                (change)= "valueHasChanged(arrayValues[i].credit, formElement.get('debit'))"
+                (keyup)= "valueHasChanged(arrayValues[i].credit, formElement.get('debit'))"
                 formControlName="credit">
                 <mat-error>Credit is required</mat-error>
             </mat-form-field>

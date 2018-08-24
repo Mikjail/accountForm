@@ -42,7 +42,7 @@ export class WelcomeComponent implements OnInit {
   }
 
 
-  private addNewSectionForm() {
+  private addNewSectionForm(): void {
     const control = <any>this.myForm.controls['arrayTestForm'];
     const formGroup = this.createForm();
     control.push(this.fb.group(formGroup));
@@ -77,7 +77,7 @@ export class WelcomeComponent implements OnInit {
   }
 
 
-  private getLedgets() {
+  private getLedgets(): void {
     this.formService.getLedgets().subscribe(
       response => {
         this.ledgets = response.message;
@@ -89,10 +89,10 @@ export class WelcomeComponent implements OnInit {
     );
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
     if (this.validateTotal()) {
-      const valueToSend = this.parseDataToSend();
+      const valueToSend: DataModelToSend[] = this.parseDataToSend();
       console.log("DATA TO SEND", valueToSend);
       this.showError = false;
     } else {
@@ -100,8 +100,8 @@ export class WelcomeComponent implements OnInit {
     }
   }
 
-  private parseDataToSend() {
-    const valueToSend = [];
+  private parseDataToSend(): DataModelToSend[] {
+    const valueToSend: DataModelToSend[] = [];
     this.arrayValues.forEach( value => {
       const credit =  value.credit ?  value.credit.toFixed(2) : '0';
       const debit = value.debit ?  value.debit.toFixed(2) : '0';
@@ -111,11 +111,11 @@ export class WelcomeComponent implements OnInit {
     return valueToSend;
   }
 
-  validateTotal() {
+  validateTotal(): boolean {
    return  this.totalCredit === this.totalDebit;
   }
 
-  showTotalCredit() {
+  showTotalCredit(): number {
     this.totalCredit = 0;
     this.arrayValues.forEach( value => {
       this.totalCredit += value.credit ? value.credit : 0;
@@ -123,7 +123,7 @@ export class WelcomeComponent implements OnInit {
      return this.totalCredit;
   }
 
-  showTotalDebit() {
+  showTotalDebit(): number {
     this.totalDebit = 0;
     this.arrayValues.forEach( value => {
       this.totalDebit += value.debit ? value.debit : 0;
@@ -131,7 +131,7 @@ export class WelcomeComponent implements OnInit {
     return this.totalDebit;
   }
 
-  valueHasChanged(formValue, formValueDependency) {
+  valueHasChanged(formValue, formValueDependency): void {
     if (formValue > 0) {
       formValueDependency.setErrors(null);
     }
